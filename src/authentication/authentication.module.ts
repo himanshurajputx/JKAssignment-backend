@@ -9,6 +9,7 @@ import { LocalStrategy } from './strategies/local.strategy';
 import { SessionSerializer } from './session.serializer';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GoogleStrategy } from './strategies/google.strategy';
+import { FacebookStrategy } from './strategies/facebook.strategy';
 
 @Module({
   imports: [
@@ -37,9 +38,9 @@ import { GoogleStrategy } from './strategies/google.strategy';
     LocalStrategy,
     JwtStrategy,
     SessionSerializer,
-    GoogleStrategy
+    GoogleStrategy,
+    FacebookStrategy,
   ],
   exports: [JwtModule],
-
 })
 export class AuthenticationModule {}

@@ -7,7 +7,8 @@ import {
   Post,
   UseGuards,
   UseInterceptors,
-  Request, Req,
+  Request,
+  Req,
 } from '@nestjs/common';
 import { TokenInterceptor } from '../shared/interceptor/token.interceptors';
 import { SessionAuthGuard } from '../shared/guards/session-auth.guard';
@@ -18,6 +19,7 @@ import { AuthenticationService } from './authentication.service';
 import { AuthUser } from '../shared/decorator/user.decorator';
 import { SignUp } from './dto/sign-up.dto';
 import { GoogleOAuthGuard } from '../shared/guards/google-oauth.guard';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('authentication')
 export class AuthenticationController {
@@ -32,7 +34,6 @@ export class AuthenticationController {
 
   @Post('login')
   @UseGuards(LocalAuthGuard)
-  @HttpCode(HttpStatus.OK)
   @UseInterceptors(TokenInterceptor)
   login(@AuthUser() user: User) {
     return user;
@@ -40,12 +41,29 @@ export class AuthenticationController {
 
   @Get('google')
   @UseGuards(GoogleOAuthGuard)
-  async googleAuth(@Req() req) {}
+  async googleAuth() {}
 
   @Get('google-redirect')
   @UseGuards(GoogleOAuthGuard)
   googleAuthRedirect(@Request() req) {
     return this.authService.googleLogin(req);
+  }
+
+  @Get('facebook')
+  @UseGuards(AuthGuard('facebook'))
+  async facebookLogin(): Promise<void> {
+    // Redirects to Facebook authentication page
+  }
+
+  @Get('facebook/redirect')
+  @UseGuards(AuthGuard('facebook'))
+  facebookLoginRedirect(
+    @Req() req: Request,
+  ): any {
+    // Facebook returns user info here
+    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    return req?.user;
   }
 
   @Get('/me')

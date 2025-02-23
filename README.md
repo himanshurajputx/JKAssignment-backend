@@ -2,11 +2,11 @@
 
 A modern blog platform built with NestJS, Angular, and AWS infrastructure.
 
-## 📋 Project Overview
+## Project Overview
 
 This application provides a complete blogging platform with authentication, role-based access control, and a responsive frontend interface. The infrastructure is provisioned and managed using AWS services and Terraform.
 
-## 🏗️ Architecture
+## Architecture
 
 ### Backend (NestJS)
 - RESTful API built with NestJS framework
@@ -29,7 +29,7 @@ This application provides a complete blogging platform with authentication, role
 - CI/CD automation with GitHub Actions
 - Observability with AWS CloudWatch
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 - Node.js (v20+)
@@ -43,10 +43,10 @@ This application provides a complete blogging platform with authentication, role
 #### Backend Setup
 ```bash
 # Clone the repository
-git clone <repository-url>
+git clone git@github.com:himanshurajputx/JKAssignment-backend.git
 
 # Navigate to backend directory
-cd backend
+cd JKAssignment-backend
 
 # Install dependencies
 npm install
@@ -61,18 +61,19 @@ npm run start:dev
 
 #### Frontend Setup
 ```bash
+# Clone the repository
+git clone git@github.com:himanshurajputx/JKAssignment-frontend.git
+
 # Navigate to frontend directory
-cd frontend
+cd JKAssignment-frontend
 
 # Install dependencies
 npm install
 
-# Set up environment variables
-cp environments/environment.example.ts environments/environment.ts
 # Edit environment.ts with your configuration
 
 # Start development server
-npm start
+ng serve
 ```
 
 ### Running Tests
@@ -88,7 +89,7 @@ npm run test       # Unit tests
 ng e2e             # Cypress tests
 ```
 
-## 🔧 Infrastructure Deployment
+## Infrastructure Deployment
 
 ```bash
 # Navigate to terraform directory
@@ -104,11 +105,11 @@ terraform plan -out=tfplan
 terraform apply tfplan
 ```
 
-## 📝 API Documentation
+## API Documentation
 
 API documentation is available at `/api/docs` when the backend server is running.
 
-## 🧪 Testing Strategy
+##  Testing Strategy
 
 ### Backend Testing
 - Unit tests for services and controllers
@@ -120,7 +121,7 @@ API documentation is available at `/api/docs` when the backend server is running
 - End-to-end testing with Cypress
 - Visual regression testing
 
-## 🔐 Security Features
+## Security Features
 
 - JWT-based authentication
 - Role-based access control
@@ -129,7 +130,7 @@ API documentation is available at `/api/docs` when the backend server is running
 - CSRF protection
 - Rate limiting
 
-## 📈 CI/CD Pipeline
+##  CI/CD Pipeline
 
 The project uses GitHub Actions for continuous integration and deployment:
 
@@ -140,7 +141,7 @@ The project uses GitHub Actions for continuous integration and deployment:
 5. Deploying to EKS
 6. Post-deployment health checks
 
-## 📊 Monitoring
+##  Monitoring
 
 - Application logs aggregated in CloudWatch
 - Performance metrics dashboard
