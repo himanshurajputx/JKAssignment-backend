@@ -15,14 +15,35 @@ import { AppModule } from './app.module';
 import { ResponseInterceptor } from './shared/interceptor/response.interceptor';
 import { ConfigService } from '@nestjs/config';
 
+
 export function setup(app: INestApplication): INestApplication {
   const logger = new Logger('Application Setup');
   const configService = app.get(ConfigService);
 
   try {
+    // CORS configuration
+    const allowedOrigins = configService
+      .get<string>('ALLOWED_ORIGINS')
+      ?.split(/\s*,\s*/)
+      .filter(Boolean) || ['http://localhost:4200'];
+    app.enableCors({
+      origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin)) {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+          callback(null, true);
+        } else {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+          callback(new Error('Not allowed by CORS'));
+        }
+      },
+      methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
+      credentials: true,
+      exposedHeaders: ['Authorization'],
+      maxAge: 86400, // 24 hours in seconds
+    });
+
     // Enable logging
     app.useLogger(logger);
-
     // Set global prefix and enable versioning
     app.setGlobalPrefix('api');
 
@@ -93,26 +114,7 @@ export function setup(app: INestApplication): INestApplication {
     app.use(passport.initialize());
     app.use(passport.session());
 
-    // CORS configuration
-    const allowedOrigins = configService
-      .get<string>('ALLOWED_ORIGINS')
-      ?.split(/\s*,\s*/)
-      .filter(Boolean) || ['http://localhost:4200'];
-    app.enableCors({
-      origin: (origin, callback) => {
-        if (!origin || allowedOrigins.includes(origin)) {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-          callback(null, true);
-        } else {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-          callback(new Error('Not allowed by CORS'));
-        }
-      },
-      methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
-      credentials: true,
-      exposedHeaders: ['Authorization'],
-      maxAge: 86400, // 24 hours in seconds
-    });
+
 
     // Set up dependency injection for custom validators
     useContainer(app.select(AppModule), { fallbackOnErrors: true });

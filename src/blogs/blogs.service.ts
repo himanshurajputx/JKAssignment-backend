@@ -90,10 +90,10 @@ export class BlogsService {
     }
   }
 
-  async details(blogId: BlogIdDto, user: User) {
+  async details(blogId: BlogIdDto, user?: User) {
     try {
       const condition = {
-        blogAuthor: user.userId,
+        blogAuthor: user?.userId,
         ...blogId,
       };
       const value: Blogs | null = await this.blogRepository.findOne({

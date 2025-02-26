@@ -11,36 +11,37 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GoogleStrategy } from './strategies/google.strategy';
 import { FacebookStrategy } from './strategies/facebook.strategy';
 
+
 @Module({
   imports: [
+    ConfigModule, // ConfigModule should be explicitly listed in imports
     UsersModule,
-    PassportModule.register({ defaultStrategy: 'jwt' }),
+    PassportModule.register({ defaultStrategy: 'jwt', session: true }), // Ensure session support if needed
     JwtModule.registerAsync({
       imports: [ConfigModule],
-      useFactory: (configService: ConfigService) => {
-        return {
-          secret: configService.get<string>('JWT_SECRET_KEY'),
-          signOptions: {
-            expiresIn: configService.get<string>('JWT_EXPIRES_IN'),
-            algorithm: 'HS384',
-          },
-          verifyOptions: {
-            algorithms: ['HS384'],
-          },
-        };
-      },
+      useFactory: (configService: ConfigService) => ({
+        secret: configService.get<string>('JWT_SECRET_KEY'),
+        signOptions: {
+          expiresIn: configService.get<string>('JWT_EXPIRES_IN') || '1h',
+          algorithm: 'HS384',
+        },
+        verifyOptions: {
+          algorithms: ['HS384'],
+        },
+      }),
       inject: [ConfigService],
     }),
   ],
   controllers: [AuthenticationController],
   providers: [
     AuthenticationService,
-    LocalStrategy,
     JwtStrategy,
-    SessionSerializer,
+    LocalStrategy,
     GoogleStrategy,
     FacebookStrategy,
+    SessionSerializer,
   ],
   exports: [JwtModule],
 })
+
 export class AuthenticationModule {}

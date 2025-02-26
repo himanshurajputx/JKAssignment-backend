@@ -8,6 +8,7 @@ export class SessionSerializer extends PassportSerializer {
     user: User,
     done: (err: Error | null, id?: User) => void,
   ): void {
+    console.log('Serializing user:', user);
     // @ts-ignore
     delete user.password;
     done(null, user);
@@ -17,6 +18,8 @@ export class SessionSerializer extends PassportSerializer {
     payload: unknown,
     done: (err: Error | null, payload?: unknown) => void,
   ): void {
+    console.log('Deserializing user:', payload);
+
     done(null, payload);
   }
 }
