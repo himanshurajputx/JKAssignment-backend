@@ -57,12 +57,10 @@ export class AuthenticationController {
 
   @Get('facebook/redirect')
   @UseGuards(AuthGuard('facebook'))
-  facebookLoginRedirect(
-    @Req() req: Request,
-  ): any {
+  facebookLoginRedirect(@Req() req: Request): any {
     // Facebook returns user info here
     // @ts-ignore
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+
     return req?.user;
   }
 
