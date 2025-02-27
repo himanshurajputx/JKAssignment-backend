@@ -60,7 +60,6 @@ export class AuthenticationController {
   facebookLoginRedirect(@Req() req: Request): any {
     // Facebook returns user info here
     // @ts-ignore
-
     return req?.user;
   }
 

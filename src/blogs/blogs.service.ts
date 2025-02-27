@@ -54,7 +54,7 @@ export class BlogsService {
       });
     } catch (e) {
       throw new InternalServerErrorException(
-        `Error in getting blogs data : ${e.message}`,
+        `Error in getting blogs data : ${e?.message}`,
       );
     }
   }
@@ -85,7 +85,7 @@ export class BlogsService {
       });
     } catch (e) {
       throw new InternalServerErrorException(
-        `Error in getting blogs list : ${e.message}`,
+        `Error in getting blogs list : ${e?.message}`,
       );
     }
   }
